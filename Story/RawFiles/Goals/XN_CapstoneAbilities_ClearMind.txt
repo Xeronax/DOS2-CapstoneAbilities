@@ -62,7 +62,7 @@ _CurrentAP < _MaxAP
 AND
 IntegerSum(_CurrentAP, 1, _NewAP)
 THEN
-DisplayText(_Instigator, "<font color='#F96C26' size='26'>+1 AP (Peace of Mind: Capstone 10)</font>");
+CharacterStatusText(_Instigator, "<font color='#F96C26'>+1 AP (Peace of Mind: Capstone 10)</font>");
 NRD_CharacterSetStatInt(_Instigator, "CurrentAP", _NewAP);
 //END_REGION
 EXITSECTION

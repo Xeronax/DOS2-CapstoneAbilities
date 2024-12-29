@@ -16,6 +16,7 @@ CharacterAddSkill(_Object, "Shout_Ignition");
 CharacterAddSkill(_Object, "Target_BurnMyEyes");
 CharacterAddSkill(_Object, "Target_Haste");
 NRD_PlayerSetBaseAbility(_Object, "FireSpecialist", 10);
+NRD_PlayerSetBaseAttribute(_Object, "Memory", 20);
 CharacterAddCivilAbilityPoint(_Object, 0);
 GoalCompleted;
 EXITSECTION

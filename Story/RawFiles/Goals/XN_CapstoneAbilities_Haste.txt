@@ -3,7 +3,7 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
-//REGION //Capstone 5
+//REGION //Capstone 4
 IF
 NRD_OnStatusAttempt(_Character, "BURNING", _, _)
 AND
@@ -13,13 +13,71 @@ CharacterIsPlayer((CHARACTERGUID)_Character, 1)
 AND
 HasActiveStatus(_Character, "HASTED", 1)
 AND
+HasActiveStatus(_Character, "FLAME_STRIDER", 0)
+AND
 NRD_SkillGetInt(_Character, "Target_Haste", "IsActivated", 1)
 AND
 CharacterGetAbility(_Character, "FireSpecialist", _Value)
 AND
-_Value >= 5
+_Value >= 4
 THEN
-DebugBreak("Apply Flame-Strider");
+ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
+
+IF
+CharacterStatusApplied(_Character, "HASTED", _)
+AND
+ObjectIsCharacter(_Character, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Character, 1)
+AND
+HasActiveStatus(_Character, "BURNING", 1)
+AND
+HasActiveStatus(_Character, "FLAME_STRIDER", 0)
+AND
+NRD_SkillGetInt(_Character, "Target_Haste", "IsActivated", 1)
+AND
+CharacterGetAbility(_Character, "FireSpecialist", _Value)
+AND
+_Value >= 4
+THEN
+ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
+//END_REGION
+
+//REGION //Flame Strider Heal
+IF
+NRD_OnHit(_Character, _Instigator, _, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Character, 1)
+AND
+HasActiveStatus(_Character, "FLAME_STRIDER", 1)
+AND
+NRD_HitStatusGetDamage(_Character, _StatusHandle, "Fire", _Damage)
+AND
+_Damage > 0
+AND
+IntegerDivide(_Damage, 5, _HealAmount)
+AND
+IntegerSubtract(0, _HealAmount, _DamageReduction)
+THEN
+NRD_HitStatusAddDamage(_Character, _StatusHandle, "Fire", _DamageReduction);
+XN_Utils_ApplyCustomHeal(_Character, _HealAmount); 
+//END_REGION
+
+//REGION //Capstone 9
+IF
+ObjectTurnStarted(_Character)
+AND
+ObjectIsCharacter(_Character, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Character, 1)
+AND
+HasActiveStatus(_Character, "FLAME_STRIDER", 1)
+AND
+CharacterGetAbility(_Character, "FireSpecialist", _Value)
+AND
+_Value >= 9
+THEN
+CharacterUseSkill(_Character, "Shout_Ignition", _Character, 1, 1, 0);
 //END_REGION
 EXITSECTION
 

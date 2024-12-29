@@ -3,7 +3,7 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
-//REGION //Capstone 4
+//REGION //Capstone 3
 IF
 NRD_OnPrepareHit(_Target, _Instigator, _, _HitHandle)
 AND
@@ -21,9 +21,7 @@ HasActiveStatus(_Target, "BURNING", 1)
 AND
 DB_XN_Casting_Ignition(1)
 THEN
-DebugBreak("Forcing crit for Ignition");
 NRD_HitSetInt(_HitHandle, "CriticalRoll", 1);
-NOT DB_XN_Casting_Ignition(1);
 //END_REGION
 
 //REGION //Ignition Cast Reset
@@ -35,7 +33,6 @@ AND
 NRD_ActionStateGetString(_Character, "SkillId", "Shout_Ignition_-1")
 THEN
 DB_XN_Casting_Ignition(1);
-DebugBreak("Casting Ignition!");
 
 IF
 NRD_OnActionStateEnter(_Character, _Action)
@@ -50,7 +47,6 @@ NRD_ActionStateGetString(_Character, "SkillId", _Skill)
 AND
 _Skill != "Shout_Ignition_-1"
 THEN
-DebugBreak("Removing DB_XN_Casting_Ignition");
 NOT DB_XN_Casting_Ignition(1);
 
 IF
@@ -62,7 +58,6 @@ CharacterIsPlayer(_Character, 1)
 AND
 _Action != "UseSkill"
 THEN
-DebugBreak("Removing DB_XN_Casting_Ignition");
 NOT DB_XN_Casting_Ignition(1);
 //END_REGION
 
