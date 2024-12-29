@@ -1,0 +1,24 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+ObjectEnteredCombat(_Object, _CombatID)
+AND
+ObjectIsCharacter(_Object, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Object, 1)
+THEN
+CharacterLevelUpTo(_Object, 3);
+CharacterAddSkill(_Object, "Projectile_FlamingDaggers");
+CharacterAddSkill(_Object, "Shout_Ignition");
+CharacterAddSkill(_Object, "Target_BurnMyEyes");
+CharacterAddSkill(_Object, "Target_Haste");
+NRD_PlayerSetBaseAbility(_Object, "FireSpecialist", 10);
+CharacterAddCivilAbilityPoint(_Object, 0);
+GoalCompleted;
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Start"

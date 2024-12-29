@@ -1,0 +1,8 @@
+{
+    "RequiredExtensionVersion": 59,
+    "ModTable": "XN_CAPSTONE_ABILITIES",
+    "FeatureFlags": [
+        "OsirisExtensions",
+        "Lua"
+    ]
+}

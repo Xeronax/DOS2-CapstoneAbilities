@@ -1,0 +1,6 @@
+
+
+### Compile("C:/Program Files (x86)/Steam/steamapps/common/Divinity Original Sin 2/DefEd/Data/Mods/CapstoneAbilities_54613af5-8d18-44af-bf41-df18a167bad3\Story/story.div","r+")
+DeleteAllData
+
+0 error(s), 0 warning(s). Compilation ended.

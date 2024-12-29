@@ -1,0 +1,92 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION //Capstone 4
+IF
+NRD_OnPrepareHit(_Target, _Instigator, _, _HitHandle)
+AND
+ObjectIsCharacter(_Instigator, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+CharacterIsEnemy((CHARACTERGUID)_Target, (CHARACTERGUID)_Instigator, 1)
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 3
+AND
+HasActiveStatus(_Target, "BURNING", 1)
+AND
+DB_XN_Casting_Ignition(1)
+THEN
+DebugBreak("Forcing crit for Ignition");
+NRD_HitSetInt(_HitHandle, "CriticalRoll", 1);
+NOT DB_XN_Casting_Ignition(1);
+//END_REGION
+
+//REGION //Ignition Cast Reset
+IF
+NRD_OnActionStateEnter(_Character, "UseSkill")
+AND
+CharacterIsPlayer(_Character, 1)
+AND
+NRD_ActionStateGetString(_Character, "SkillId", "Shout_Ignition_-1")
+THEN
+DB_XN_Casting_Ignition(1);
+DebugBreak("Casting Ignition!");
+
+IF
+NRD_OnActionStateEnter(_Character, _Action)
+AND
+DB_XN_Casting_Ignition(1)
+AND
+CharacterIsPlayer(_Character, 1)
+AND
+_Action == "UseSkill"
+AND
+NRD_ActionStateGetString(_Character, "SkillId", _Skill)
+AND
+_Skill != "Shout_Ignition_-1"
+THEN
+DebugBreak("Removing DB_XN_Casting_Ignition");
+NOT DB_XN_Casting_Ignition(1);
+
+IF
+NRD_OnActionStateEnter(_Character, _Action)
+AND
+DB_XN_Casting_Ignition(1)
+AND
+CharacterIsPlayer(_Character, 1)
+AND
+_Action != "UseSkill"
+THEN
+DebugBreak("Removing DB_XN_Casting_Ignition");
+NOT DB_XN_Casting_Ignition(1);
+//END_REGION
+
+//REGION //Capstone 7
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+ObjectIsCharacter(_Instigator, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+CharacterIsEnemy((CHARACTERGUID)_Target, (CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "SkillId", "Shout_Ignition_-1")
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 7
+AND
+NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
+THEN
+ApplyStatus(_Target, "FIREBLOOD", 6.0, 0, _Instigator);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"

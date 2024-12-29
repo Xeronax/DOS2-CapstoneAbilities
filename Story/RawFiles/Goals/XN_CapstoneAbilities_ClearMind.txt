@@ -1,0 +1,71 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION //Capstone 6
+IF
+NRD_OnHit(_Target, _Instigator, _Damage, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+CharacterIsEnemy((CHARACTERGUID)_Target, (CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "DamageSourceType" , _DamageSource)
+AND
+XN_Utils_DamageSourceIsDirect(_DamageSource, 1)
+AND
+HasActiveStatus(_Instigator, "CLEAR_MINDED", 1)
+AND
+NRD_SkillGetInt(_Instigator, "Target_BurnMyEyes", "IsActivated", 1)
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 6
+AND
+NRD_CharacterGetStatInt(_Target, "MaxVitality", _TargetMaxHP)
+AND
+IntegerDivide(_TargetMaxHP, 50, _ExtraDamage)
+THEN
+ApplyDamage(_Target, _ExtraDamage, "Fire", _Instigator);
+//END_REGION
+
+//REGION //Capstone 10
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+ObjectIsCharacter(_Instigator, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+CharacterIsEnemy((CHARACTERGUID)_Target, (CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "SkillId", _Skill)
+AND
+XN_Utils_SkillRequiresSchool(_Skill, "FireSpecialist", 1)
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 10
+AND
+NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
+AND
+HasActiveStatus(_Instigator, "CLEAR_MINDED", 1)
+AND
+NRD_SkillGetInt(_Instigator, "Target_BurnMyEyes", "IsActivated", 1)
+AND
+NRD_CharacterGetStatInt(_Instigator, "CurrentAP", _CurrentAP)
+AND
+NRD_CharacterGetComputedStat(_Instigator, "APMaximum", 0, _MaxAP)
+AND
+_CurrentAP < _MaxAP
+AND
+IntegerSum(_CurrentAP, 1, _NewAP)
+THEN
+DisplayText(_Instigator, "<font color='#F96C26' size='26'>+1 AP (Peace of Mind: Capstone 10)</font>");
+NRD_CharacterSetStatInt(_Instigator, "CurrentAP", _NewAP);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"

@@ -1,0 +1,27 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION //Capstone 5
+IF
+NRD_OnStatusAttempt(_Character, "BURNING", _, _)
+AND
+ObjectIsCharacter(_Character, 1)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Character, 1)
+AND
+HasActiveStatus(_Character, "HASTED", 1)
+AND
+NRD_SkillGetInt(_Character, "Target_Haste", "IsActivated", 1)
+AND
+CharacterGetAbility(_Character, "FireSpecialist", _Value)
+AND
+_Value >= 5
+THEN
+DebugBreak("Apply Flame-Strider");
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"

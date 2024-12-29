@@ -1,0 +1,35 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION //Capstone 4
+IF
+NRD_OnHit(_Target, _Instigator, _Damage, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+CharacterIsEnemy((CHARACTERGUID)_Target, (CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "DamageSourceType" , _DamageSource)
+AND
+_DamageSource == "Attack"
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "SkillId", _SkillID)
+AND
+_SkillID == "Projectile_FlamingDaggers_-1"
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 4
+AND
+NRD_SkillGetCooldown(_Instigator, "Shout_Ignition", _Cooldown)
+AND
+_Cooldown > 0
+THEN
+NRD_SkillSetCooldown(_Instigator, "Shout_Ignition", 0.0);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"
