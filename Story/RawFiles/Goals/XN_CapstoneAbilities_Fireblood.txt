@@ -1,0 +1,56 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION // Capstone 2
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+HasActiveStatus(_Target, "FIREBLOOD", 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "DamageSourceType" , _DamageSource)
+AND
+XN_Utils_DamageSourceIsDirect(_DamageSource, 1)
+AND
+NRD_HitStatusGetDamage(_Target, _StatusHandle, "Fire", _Damage)
+AND
+_Damage > 0
+AND
+CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
+AND
+_Value >= 2
+AND
+NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 0)
+THEN
+ApplyStatus(_Instigator, "HEATING_UP", -1.0, 0, _Instigator);
+
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
+AND
+HasActiveStatus(_Instigator, "HEATING_UP", 1)
+THEN
+RemoveStatus(_Instigator, "HEATING_UP");
+//END_REGION
+
+//REGION // Capstone 3
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+HasActiveStatus(_Target, "FIREBLOOD", 1)
+AND
+NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
+THEN
+XN_Helpers_FirebloodDisarm(_Target, _Instigator);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"

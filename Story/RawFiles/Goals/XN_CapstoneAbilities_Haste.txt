@@ -22,6 +22,7 @@ AND
 _Value >= 4
 THEN
 ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
+CharacterStatusText(_Character, "<font color='#F96C26'>Flame Strider</font>");
 
 IF
 CharacterStatusApplied(_Character, "HASTED", _)
@@ -41,6 +42,7 @@ AND
 _Value >= 4
 THEN
 ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
+CharacterStatusText(_Character, "<font color='#F96C26'>Flame Strider</font>");
 //END_REGION
 
 //REGION //Flame Strider Heal
