@@ -3,7 +3,7 @@ SubGoalCombiner SGC_AND
 INITSECTION
 
 KBSECTION
-//REGION //Capstone 4
+//REGION //Capstone 2
 IF
 NRD_OnStatusAttempt(_Character, "BURNING", _, _)
 AND
@@ -19,7 +19,7 @@ NRD_SkillGetInt(_Character, "Target_Haste", "IsActivated", 1)
 AND
 CharacterGetAbility(_Character, "FireSpecialist", _Value)
 AND
-_Value >= 4
+_Value >= 2
 THEN
 ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
 CharacterStatusText(_Character, "<font color='#F96C26'>Flame Strider</font>");
@@ -65,7 +65,7 @@ NRD_HitStatusAddDamage(_Character, _StatusHandle, "Fire", _DamageReduction);
 XN_Utils_ApplyCustomHeal(_Character, _HealAmount); 
 //END_REGION
 
-//REGION //Capstone 9
+//REGION //Capstone 8
 IF
 ObjectTurnStarted(_Character)
 AND

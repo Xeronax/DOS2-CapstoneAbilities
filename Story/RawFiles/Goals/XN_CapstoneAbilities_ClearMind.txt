@@ -25,7 +25,7 @@ _Value >= 6
 AND
 NRD_CharacterGetStatInt(_Target, "MaxVitality", _TargetMaxHP)
 AND
-IntegerDivide(_TargetMaxHP, 50, _ExtraDamage)
+IntegerDivide(_TargetMaxHP, 33, _ExtraDamage)
 THEN
 ApplyDamage(_Target, _ExtraDamage, "Fire", _Instigator);
 //END_REGION

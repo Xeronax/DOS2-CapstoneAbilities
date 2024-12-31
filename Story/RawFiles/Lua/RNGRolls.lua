@@ -1,24 +1,23 @@
 local function CreateRoll(chance)
     local Roll = { success = false, resultString = "" }
-    local successThreshold = 1 - chance
-    local result = math.random(0, 1)
-    local intResult = math.floor(result * 100)
-    local intSuccessThreshold = math.floor(successThreshold * 100)
+    local successThreshold = 100 - chance
+    local result = math.random(0, 100)
 
     if result > successThreshold then
         Roll.success = true
-        Roll.resultString = "<font color='#2AF413>Success! " .. tostring(intResult * 100) .. "/" .. tostring(intSuccessThreshold * 100) .. "</font>"
+        Roll.resultString = "<font color='#2AF413>Success! " .. tostring(result) .. "/" .. tostring(successThreshold) .. "</font>"
     else
-        Roll.resultString = "<font color='#ED3434>Fail! " .. tostring(intResult * 100) .. "/" .. tostring(intSuccessThreshold * 100) .. "</font>"
+        Roll.resultString = "<font color='#ED3434>Fail! " .. tostring(result) .. "/" .. tostring(successThreshold) .. "</font>"
     end
     return Roll
 end
 
 local function FirebloodDisarm(target, instigator)
     local polymorph = Osi.CharacterGetAbility(instigator, "Polymorph")
-    local chance = 0.15 + (polymorph / 100)
+    local chance = 15 + polymorph
     local roll = CreateRoll(chance)
     roll.resultString = "<font color='#F96C26'>Bleed Fire</font> - <font color='#FFC714'>Capstone 3</font>: " .. roll.resultString
+    print(roll.resultString)
     if roll.success then
         Osi.ApplyStatus(target, "ATROPHY", 6.0, 0, instigator)
     end

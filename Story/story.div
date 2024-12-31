@@ -1112,6 +1112,7 @@ call NRD_SaveFile((STRING)_Path, (STRING)_Contents) (1,1400,89,1)
 call XN_Utils_ApplyCustomHeal((GUIDSTRING)_Character, (INTEGER)_Amount) (1,1400,90,1)
 call XN_Helpers_FirebloodDisarm((GUIDSTRING)_Target, (GUIDSTRING)_Instigator) (1,1400,91,1)
 call XN_Helpers_HeatUp((GUIDSTRING)_Target) (1,1400,92,1)
+call XN_Helpers_InnerWarmth((GUIDSTRING)_Target) (1,1400,93,1)
 query NRD_StringCompare([in](STRING)_A, [in](STRING)_B, [out](INTEGER)_Result) (2,1500,0,1)
 query NRD_StringLength([in](STRING)_String, [out](INTEGER)_Length) (2,1500,1,1)
 query NRD_StringFormat([in](STRING)_Format, [out](STRING)_Result) (2,1500,2,1)
@@ -211714,6 +211715,11 @@ Goal(563)
 		CharacterAddSkill(_Object, "Target_BurnMyEyes");
 		CharacterAddSkill(_Object, "Target_Haste");
 		CharacterAddSkill(_Object, "Target_Fireblood");
+		NRD_SkillBarSetSkill(_Object, 0, "Projectile_FlamingDaggers");
+		NRD_SkillBarSetSkill(_Object, 1, "Shout_Ignition");
+		NRD_SkillBarSetSkill(_Object, 2, "Target_BurnMyEyes");
+		NRD_SkillBarSetSkill(_Object, 3, "Target_Haste");
+		NRD_SkillBarSetSkill(_Object, 4, "Target_Fireblood");
 		NRD_PlayerSetBaseAbility(_Object, "FireSpecialist", 10);
 		NRD_PlayerSetBaseAbility(_Object, "Polymorph", 10);
 		NRD_PlayerSetBaseAttribute(_Object, "Memory", 20);
@@ -211757,7 +211763,7 @@ Goal(564)
 		AND
 		NRD_CharacterGetStatInt(_Target, "MaxVitality", _TargetMaxHP)
 		AND
-		IntegerDivide(_TargetMaxHP, 50, _ExtraDamage)
+		IntegerDivide(_TargetMaxHP, 33, _ExtraDamage)
 		THEN
 		ApplyDamage(_Target, _ExtraDamage, "Fire", _Instigator);
 		//END_REGION
@@ -211813,7 +211819,7 @@ Goal(565)
 	}
 	KB
 	{
-		//REGION // Capstone 2
+		//REGION // Capstone 1
 		IF
 		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
 		AND
@@ -211825,18 +211831,16 @@ Goal(565)
 		AND
 		XN_Utils_DamageSourceIsDirect(_DamageSource, 1)
 		AND
-		NRD_HitStatusGetDamage(_Target, _StatusHandle, "Fire", _Damage)
-		AND
-		_Damage > 0
-		AND
 		CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
 		AND
-		_Value >= 2
+		_Value >= 1
 		AND
 		NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 0)
 		THEN
-		ApplyStatus(_Instigator, "HEATING_UP", -1.0, 0, _Instigator);
+		XN_Helpers_HeatUp(_Instigator);
+		//END_REGION
 		
+		//REGION // Capstone 3
 		IF
 		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
 		AND
@@ -211846,20 +211850,8 @@ Goal(565)
 		AND
 		HasActiveStatus(_Instigator, "HEATING_UP", 1)
 		THEN
-		RemoveStatus(_Instigator, "HEATING_UP");
+		XN_Helpers_InnerWarmth(_Instigator); // Helper handles Polymorph check
 		//END_REGION
-		
-		//REGION // Capstone 3
-		IF
-		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
-		AND
-		CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
-		AND
-		HasActiveStatus(_Target, "FIREBLOOD", 1)
-		AND
-		NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
-		THEN
-		XN_Helpers_FirebloodDisarm(_Target, _Instigator);
 		
 	}
 	EXIT
@@ -211876,7 +211868,7 @@ Goal(566)
 	}
 	KB
 	{
-		//REGION //Capstone 4
+		//REGION //Capstone 2
 		IF
 		NRD_OnStatusAttempt(_Character, "BURNING", _, _)
 		AND
@@ -211892,7 +211884,7 @@ Goal(566)
 		AND
 		CharacterGetAbility(_Character, "FireSpecialist", _Value)
 		AND
-		_Value >= 4
+		_Value >= 2
 		THEN
 		ApplyStatus(_Character, "FLAME_STRIDER", 12.0, 0, _Character);
 		CharacterStatusText(_Character, "<font color='#F96C26'>Flame Strider</font>");
@@ -211938,7 +211930,7 @@ Goal(566)
 		XN_Utils_ApplyCustomHeal(_Character, _HealAmount); 
 		//END_REGION
 		
-		//REGION //Capstone 9
+		//REGION //Capstone 8
 		IF
 		ObjectTurnStarted(_Character)
 		AND
@@ -212046,7 +212038,7 @@ Goal(567)
 		AND
 		NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
 		THEN
-		ApplyStatus(_Target, "FIREBLOOD", 6.0, 0, _Instigator);
+		ApplyStatus(_Target, "FIREBLOOD", 18.0, 0, _Instigator);
 		//END_REGION
 		
 	}

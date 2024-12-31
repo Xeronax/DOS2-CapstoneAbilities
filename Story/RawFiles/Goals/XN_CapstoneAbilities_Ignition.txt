@@ -79,7 +79,7 @@ _Value >= 7
 AND
 NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
 THEN
-ApplyStatus(_Target, "FIREBLOOD", 6.0, 0, _Instigator);
+ApplyStatus(_Target, "FIREBLOOD", 18.0, 0, _Instigator);
 //END_REGION
 EXITSECTION
 
