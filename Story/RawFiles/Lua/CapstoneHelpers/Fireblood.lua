@@ -1,4 +1,4 @@
-HeatingUpBonus = {}
+local HeatingUpBonus = {}
 
 local function HeatUp(character)
     local pyrokinetic = Osi.CharacterGetAbility(character, "FireSpecialist")
@@ -31,7 +31,7 @@ local function InnerWarmth(character)
     InnerWarmthInstance.MagicArmor = stacks * pointsPerStack
     Ext.Stats.Sync("Stats_XN_Inner_Warmth")
     Osi.ApplyStatus(character, "INNER_WARMTH", 6, 0, character)
-    Osi.XN_Utils_ApplyCustomHeal(character, heal)
+    ApplyCustomHeal(character, heal)
 end
 
 Ext.Osiris.NewCall(HeatUp, "XN_Helpers_HeatUp", "(GUIDSTRING)_Target");
