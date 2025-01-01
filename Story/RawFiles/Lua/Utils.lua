@@ -31,6 +31,9 @@ local function SkillRequiresSchool(skillId, school)
         return 0
     end
     local skillData = Ext.Stats.Get(extracted)
+    if skillData == nil then
+        return 0
+    end
     for _, requirementTable  in pairs(skillData.MemorizationRequirements) do
         if requirementTable.Requirement == school then
             return 1
@@ -39,8 +42,17 @@ local function SkillRequiresSchool(skillId, school)
     return 0
 end
 
+local function ReduceCooldown(characterGUID, skillId, numTurns)
+    local currentCooldown = Osi.NRD_GetSkillCooldown(characterGUID, skillId)
+    local currentCooldownTurns = math.floor(currentCooldown / 6)
+    if currentCooldownTurns < 1 then return end
+    local newCooldown = math.max((currentCooldownTurns - numTurns) * 6, 0)
+    Osi.NRD_SetSkillCooldown(characterGUID, skillId, newCooldown)
+end
+
 print("Adding Utils to story headers...")
 Ext.Osiris.NewQuery(DamageSourceIsDirect, "XN_Utils_DamageSourceIsDirect", "[in](STRING)_Source, [out](INTEGER)_Result");
 Ext.Osiris.NewQuery(SkillRequiresSchool, "XN_Utils_SkillRequiresSchool", "[in](STRING)_SkillID, [in](STRING)_School, [out](INTEGER)_Result");
 
 Ext.Osiris.NewCall(ApplyCustomHeal, "XN_Utils_ApplyCustomHeal", "(GUIDSTRING)_Character, (INTEGER)_Amount");
+Ext.Osiris.NewCall(ReduceCooldown, "XN_Utils_ReduceCooldown", "(GUIDSTRING)_Character, (STRING)_SkillID, (INTEGER)_Turns");

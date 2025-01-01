@@ -211714,14 +211714,11 @@ Goal(563)
 		CharacterAddSkill(_Object, "Shout_Ignition");
 		CharacterAddSkill(_Object, "Target_BurnMyEyes");
 		CharacterAddSkill(_Object, "Target_Haste");
-		CharacterAddSkill(_Object, "Target_Fireblood");
-		NRD_SkillBarSetSkill(_Object, 0, "Projectile_FlamingDaggers");
 		NRD_SkillBarSetSkill(_Object, 1, "Shout_Ignition");
-		NRD_SkillBarSetSkill(_Object, 2, "Target_BurnMyEyes");
-		NRD_SkillBarSetSkill(_Object, 3, "Target_Haste");
-		NRD_SkillBarSetSkill(_Object, 4, "Target_Fireblood");
+		NRD_SkillBarSetSkill(_Object, 2, "Target_CorpseExplosion");
+		NRD_SkillBarSetSkill(_Object, 3, "Target_BurnMyEyes");
+		NRD_SkillBarSetSkill(_Object, 4, "Target_Haste");
 		NRD_PlayerSetBaseAbility(_Object, "FireSpecialist", 10);
-		NRD_PlayerSetBaseAbility(_Object, "Polymorph", 10);
 		NRD_PlayerSetBaseAttribute(_Object, "Memory", 20);
 		CharacterAddCivilAbilityPoint(_Object, 0);
 		GoalCompleted;
@@ -211810,57 +211807,8 @@ Goal(564)
 		
 	}
 }
-Goal(565).Title("XN_CapstoneAbilities_Fireblood");
+Goal(565).Title("XN_CapstoneAbilities_Haste");
 Goal(565)
-{
-	INIT
-	{
-		
-	}
-	KB
-	{
-		//REGION // Capstone 1
-		IF
-		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
-		AND
-		CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
-		AND
-		HasActiveStatus(_Target, "FIREBLOOD", 1)
-		AND
-		NRD_StatusGetString(_Target, _StatusHandle, "DamageSourceType" , _DamageSource)
-		AND
-		XN_Utils_DamageSourceIsDirect(_DamageSource, 1)
-		AND
-		CharacterGetAbility(_Instigator, "FireSpecialist", _Value)
-		AND
-		_Value >= 1
-		AND
-		NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 0)
-		THEN
-		XN_Helpers_HeatUp(_Instigator);
-		//END_REGION
-		
-		//REGION // Capstone 3
-		IF
-		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
-		AND
-		CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
-		AND
-		NRD_StatusGetInt(_Target, _StatusHandle, "CriticalHit", 1)
-		AND
-		HasActiveStatus(_Instigator, "HEATING_UP", 1)
-		THEN
-		XN_Helpers_InnerWarmth(_Instigator); // Helper handles Polymorph check
-		//END_REGION
-		
-	}
-	EXIT
-	{
-		
-	}
-}
-Goal(566).Title("XN_CapstoneAbilities_Haste");
-Goal(566)
 {
 	INIT
 	{
@@ -211953,8 +211901,8 @@ Goal(566)
 		
 	}
 }
-Goal(567).Title("XN_CapstoneAbilities_Ignition");
-Goal(567)
+Goal(566).Title("XN_CapstoneAbilities_Ignition");
+Goal(566)
 {
 	INIT
 	{
@@ -212047,8 +211995,8 @@ Goal(567)
 		
 	}
 }
-Goal(568).Title("XN_CapstoneAbilities_SearingDaggers");
-Goal(568)
+Goal(567).Title("XN_CapstoneAbilities_SearingDaggers");
+Goal(567)
 {
 	INIT
 	{
@@ -212089,8 +212037,8 @@ Goal(568)
 		
 	}
 }
-Goal(569).Title("Z_Shared_Campaign_At_End");
-Goal(569)
+Goal(568).Title("Z_Shared_Campaign_At_End");
+Goal(568)
 {
 	INIT
 	{
@@ -212112,8 +212060,8 @@ Goal(569)
 		
 	}
 }
-Goal(570).Title("Z_Shared_CharacterCreation");
-Goal(570)
+Goal(569).Title("Z_Shared_CharacterCreation");
+Goal(569)
 {
 	INIT
 	{
@@ -212710,8 +212658,8 @@ Goal(570)
 		
 	}
 }
-Goal(571).Title("Z_Shared_CharacterCreation_AfterEvents");
-Goal(571)
+Goal(570).Title("Z_Shared_CharacterCreation_AfterEvents");
+Goal(570)
 {
 	INIT
 	{
@@ -212781,8 +212729,8 @@ Goal(571)
 		
 	}
 }
-Goal(572).Title("ZZZ_ItemEvents");
-Goal(572)
+Goal(571).Title("ZZZ_ItemEvents");
+Goal(571)
 {
 	INIT
 	{
@@ -212806,8 +212754,8 @@ Goal(572)
 		
 	}
 }
-Goal(573).Title("ZZZ_LastGoal");
-Goal(573)
+Goal(572).Title("ZZZ_LastGoal");
+Goal(572)
 {
 	INIT
 	{
@@ -212909,8 +212857,8 @@ Goal(573)
 		
 	}
 }
-Goal(574).Title("ZZZ_LookAts");
-Goal(574)
+Goal(573).Title("ZZZ_LookAts");
+Goal(573)
 {
 	INIT
 	{
@@ -213290,7 +213238,7 @@ Goal(201).SubGoal(530);
 Goal(201).SubGoal(533);
 Goal(201).SubGoal(535);
 Goal(201).SubGoal(536);
-Goal(201).SubGoal(572);
+Goal(201).SubGoal(571);
 Goal(50).SubGoals(AND);
 Goal(53).SubGoals(AND);
 Goal(56).SubGoals(AND);
@@ -213326,7 +213274,7 @@ Goal(530).SubGoals(AND);
 Goal(533).SubGoals(AND);
 Goal(535).SubGoals(AND);
 Goal(536).SubGoals(AND);
-Goal(572).SubGoals(AND);
+Goal(571).SubGoals(AND);
 Goal(202).SubGoal(24);
 Goal(24).SubGoals(AND);
 Goal(203).SubGoal(204);
@@ -213880,7 +213828,7 @@ Goal(530).SubGoal(531);
 Goal(530).SubGoal(532);
 Goal(530).SubGoal(561);
 Goal(530).SubGoal(562);
-Goal(530).SubGoal(574);
+Goal(530).SubGoal(573);
 Goal(20).SubGoals(AND);
 Goal(21).SubGoals(AND);
 Goal(27).SubGoals(AND);
@@ -213930,7 +213878,7 @@ Goal(531).SubGoals(AND);
 Goal(532).SubGoals(AND);
 Goal(561).SubGoals(AND);
 Goal(562).SubGoals(AND);
-Goal(574).SubGoals(AND);
+Goal(573).SubGoals(AND);
 Goal(535).SubGoal(534);
 Goal(534).SubGoals(AND);
 Goal(542).SubGoal(540);
@@ -213985,16 +213933,14 @@ Goal(563).SubGoal(564);
 Goal(563).SubGoal(565);
 Goal(563).SubGoal(566);
 Goal(563).SubGoal(567);
-Goal(563).SubGoal(568);
 Goal(564).SubGoals(AND);
 Goal(565).SubGoals(AND);
 Goal(566).SubGoals(AND);
 Goal(567).SubGoals(AND);
-Goal(568).SubGoals(AND);
-Goal(569).SubGoal(528);
-Goal(569).SubGoal(570);
-Goal(569).SubGoal(571);
+Goal(568).SubGoal(528);
+Goal(568).SubGoal(569);
+Goal(568).SubGoal(570);
 Goal(528).SubGoals(AND);
+Goal(569).SubGoals(AND);
 Goal(570).SubGoals(AND);
-Goal(571).SubGoals(AND);
 
