@@ -1,0 +1,19 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+AND
+CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+AND
+NRD_StatusGetString(_Target, _StatusHandle, "SkillId", _SkillName)
+AND
+_SkillName == "Target_SpontaneousCombustion_-1"
+THEN
+XN_Helpers_SpreadFireAndNecrofire((CHARACTERGUID)_Target);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "XN_CapstoneAbilities__Main"

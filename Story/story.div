@@ -1110,9 +1110,10 @@ call NRD_Experiment((STRING)_Arg1, (STRING)_Arg2, (STRING)_Arg3) (1,1400,87,1)
 call NRD_ShowErrorMessage((STRING)_Message) (1,1400,88,1)
 call NRD_SaveFile((STRING)_Path, (STRING)_Contents) (1,1400,89,1)
 call XN_Utils_ApplyCustomHeal((GUIDSTRING)_Character, (INTEGER)_Amount) (1,1400,90,1)
-call XN_Helpers_FirebloodDisarm((GUIDSTRING)_Target, (GUIDSTRING)_Instigator) (1,1400,91,1)
-call XN_Helpers_HeatUp((GUIDSTRING)_Target) (1,1400,92,1)
-call XN_Helpers_InnerWarmth((GUIDSTRING)_Target) (1,1400,93,1)
+call XN_Utils_ReduceCooldown((GUIDSTRING)_Character, (STRING)_SkillID, (INTEGER)_Turns) (1,1400,91,1)
+call XN_Helpers_FirebloodDisarm((GUIDSTRING)_Target, (GUIDSTRING)_Instigator) (1,1400,92,1)
+call XN_Helpers_HeatUp((CHARACTERGUID)_Character) (1,1400,93,1)
+call XN_Helpers_SpreadFireAndNecrofire((CHARACTERGUID)_Target) (1,1400,94,1)
 query NRD_StringCompare([in](STRING)_A, [in](STRING)_B, [out](INTEGER)_Result) (2,1500,0,1)
 query NRD_StringLength([in](STRING)_String, [out](INTEGER)_Length) (2,1500,1,1)
 query NRD_StringFormat([in](STRING)_Format, [out](STRING)_Result) (2,1500,2,1)
@@ -1363,9 +1364,8 @@ query NRD_ModQuery10([in](STRING)_Mod, [in](STRING)_Func, [in](STRING)_Arg1, [in
 query NRD_IsModLoaded([in](GUIDSTRING)_ModUuid, [out](INTEGER)_IsLoaded) (2,1500,247,1)
 query NRD_GetVersion([out](INTEGER)_Version) (2,1500,248,1)
 query NRD_LoadFile([in](STRING)_Path, [out](STRING)_Contents) (2,1500,249,1)
-query XN_Utils_Subtract([in](REAL)_A, [in](REAL)_B, [out](REAL)_Result) (2,1500,250,1)
-query XN_Utils_DamageSourceIsDirect([in](STRING)_Source, [out](INTEGER)_Result) (2,1500,251,1)
-query XN_Utils_SkillRequiresSchool([in](STRING)_SkillID, [in](STRING)_School, [out](INTEGER)_Result) (2,1500,252,1)
+query XN_Utils_DamageSourceIsDirect([in](STRING)_Source, [out](INTEGER)_Result) (2,1500,250,1)
+query XN_Utils_SkillRequiresSchool([in](STRING)_SkillID, [in](STRING)_School, [out](INTEGER)_Result) (2,1500,251,1)
 event NRD_Loop((STRING)_Event, (INTEGER)_Num) (3,1600,0,1)
 event NRD_Loop((GUIDSTRING)_Object, (STRING)_Event, (INTEGER)_Num) (3,1600,1,1)
 event NRD_StatusIteratorEvent((STRING)_Event, (GUIDSTRING)_Object, (STRING)_StatusId, (INTEGER64)_StatusHandle) (3,1600,2,1)
@@ -211714,8 +211714,10 @@ Goal(563)
 		CharacterAddSkill(_Object, "Shout_Ignition");
 		CharacterAddSkill(_Object, "Target_BurnMyEyes");
 		CharacterAddSkill(_Object, "Target_Haste");
-		NRD_SkillBarSetSkill(_Object, 1, "Shout_Ignition");
-		NRD_SkillBarSetSkill(_Object, 2, "Target_CorpseExplosion");
+		CharacterAddSkill(_Object, "Target_SpontaneousCombustion");
+		NRD_SkillBarSetSkill(_Object, 0, "Shout_Ignition");
+		NRD_SkillBarSetSkill(_Object, 1, "Projectile_FlamingDaggers");
+		NRD_SkillBarSetSkill(_Object, 2, "Target_SpontaneousCombustion");
 		NRD_SkillBarSetSkill(_Object, 3, "Target_BurnMyEyes");
 		NRD_SkillBarSetSkill(_Object, 4, "Target_Haste");
 		NRD_PlayerSetBaseAbility(_Object, "FireSpecialist", 10);
@@ -212037,8 +212039,34 @@ Goal(567)
 		
 	}
 }
-Goal(568).Title("Z_Shared_Campaign_At_End");
+Goal(568).Title("XN_CapstoneAbilities_SpontaneousCombustion");
 Goal(568)
+{
+	INIT
+	{
+		
+	}
+	KB
+	{
+		IF
+		NRD_OnHit(_Target, _Instigator, _, _StatusHandle)
+		AND
+		CharacterIsPlayer((CHARACTERGUID)_Instigator, 1)
+		AND
+		NRD_StatusGetString(_Target, _StatusHandle, "SkillId", _SkillName)
+		AND
+		_SkillName == "Target_SpontaneousCombustion_-1"
+		THEN
+		XN_Helpers_SpreadFireAndNecrofire((CHARACTERGUID)_Target);
+		
+	}
+	EXIT
+	{
+		
+	}
+}
+Goal(569).Title("Z_Shared_Campaign_At_End");
+Goal(569)
 {
 	INIT
 	{
@@ -212060,8 +212088,8 @@ Goal(568)
 		
 	}
 }
-Goal(569).Title("Z_Shared_CharacterCreation");
-Goal(569)
+Goal(570).Title("Z_Shared_CharacterCreation");
+Goal(570)
 {
 	INIT
 	{
@@ -212658,8 +212686,8 @@ Goal(569)
 		
 	}
 }
-Goal(570).Title("Z_Shared_CharacterCreation_AfterEvents");
-Goal(570)
+Goal(571).Title("Z_Shared_CharacterCreation_AfterEvents");
+Goal(571)
 {
 	INIT
 	{
@@ -212729,8 +212757,8 @@ Goal(570)
 		
 	}
 }
-Goal(571).Title("ZZZ_ItemEvents");
-Goal(571)
+Goal(572).Title("ZZZ_ItemEvents");
+Goal(572)
 {
 	INIT
 	{
@@ -212754,8 +212782,8 @@ Goal(571)
 		
 	}
 }
-Goal(572).Title("ZZZ_LastGoal");
-Goal(572)
+Goal(573).Title("ZZZ_LastGoal");
+Goal(573)
 {
 	INIT
 	{
@@ -212857,8 +212885,8 @@ Goal(572)
 		
 	}
 }
-Goal(573).Title("ZZZ_LookAts");
-Goal(573)
+Goal(574).Title("ZZZ_LookAts");
+Goal(574)
 {
 	INIT
 	{
@@ -213238,7 +213266,7 @@ Goal(201).SubGoal(530);
 Goal(201).SubGoal(533);
 Goal(201).SubGoal(535);
 Goal(201).SubGoal(536);
-Goal(201).SubGoal(571);
+Goal(201).SubGoal(572);
 Goal(50).SubGoals(AND);
 Goal(53).SubGoals(AND);
 Goal(56).SubGoals(AND);
@@ -213274,7 +213302,7 @@ Goal(530).SubGoals(AND);
 Goal(533).SubGoals(AND);
 Goal(535).SubGoals(AND);
 Goal(536).SubGoals(AND);
-Goal(571).SubGoals(AND);
+Goal(572).SubGoals(AND);
 Goal(202).SubGoal(24);
 Goal(24).SubGoals(AND);
 Goal(203).SubGoal(204);
@@ -213828,7 +213856,7 @@ Goal(530).SubGoal(531);
 Goal(530).SubGoal(532);
 Goal(530).SubGoal(561);
 Goal(530).SubGoal(562);
-Goal(530).SubGoal(573);
+Goal(530).SubGoal(574);
 Goal(20).SubGoals(AND);
 Goal(21).SubGoals(AND);
 Goal(27).SubGoals(AND);
@@ -213878,7 +213906,7 @@ Goal(531).SubGoals(AND);
 Goal(532).SubGoals(AND);
 Goal(561).SubGoals(AND);
 Goal(562).SubGoals(AND);
-Goal(573).SubGoals(AND);
+Goal(574).SubGoals(AND);
 Goal(535).SubGoal(534);
 Goal(534).SubGoals(AND);
 Goal(542).SubGoal(540);
@@ -213933,14 +213961,16 @@ Goal(563).SubGoal(564);
 Goal(563).SubGoal(565);
 Goal(563).SubGoal(566);
 Goal(563).SubGoal(567);
+Goal(563).SubGoal(568);
 Goal(564).SubGoals(AND);
 Goal(565).SubGoals(AND);
 Goal(566).SubGoals(AND);
 Goal(567).SubGoals(AND);
-Goal(568).SubGoal(528);
-Goal(568).SubGoal(569);
-Goal(568).SubGoal(570);
+Goal(568).SubGoals(AND);
+Goal(569).SubGoal(528);
+Goal(569).SubGoal(570);
+Goal(569).SubGoal(571);
 Goal(528).SubGoals(AND);
-Goal(569).SubGoals(AND);
 Goal(570).SubGoals(AND);
+Goal(571).SubGoals(AND);
 
