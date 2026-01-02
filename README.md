@@ -44,7 +44,7 @@ From a complexity standpoint, it introduced a lot of interplay with existing sta
 ### What I would change in hindsight
 - Add hard 1 AP per spell cap to Awakened Fury to force the failure mode of wrong choices
 - Trigger a different spell on turn start than Ignition
-- Ignition doesn't crit Burning enemies, this removes a lot of the cushion that the playstyle have no failure modes, you Heating Up stacks matter if you don't get auto-crits from Ignition
+- Ignition doesn't crit Burning enemies, this removes a lot of the cushion that cause the playstyle to have no failure modes, your Heating Up stacks matter if you don't get auto-crits from Ignition
 - Spontaneous Combustion spreads to 1 target within 20m
 - Flamestrider introduced later into Pyro skill investment
 - Replace some status bonuses and procs with cooldown reduction to introduce more decisions to the player
@@ -119,3 +119,4 @@ Capstone Effects
 Infernal Chains (Pyrokinetic 5) — Spontaneous Combustion spreads Burning and Necrofire statuses on the target to other enemies within 20m. Inflicting Burning or Necrofire has a [X]% chance to reduce the cooldown of Spontaneous Combustion by 1 turn.
 
 Gathering Flame (Pyrokinetic 7) — You siphon a portion of fire damage dealt to enemies as a shield that blocks incoming damage.
+
